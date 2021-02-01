@@ -148,3 +148,7 @@ aside li {
 footer {
   margin-top: 20px;
 }
+
+img[src = "ressources/tram-tours.jpeg"] {
+  margin: 10px;
+}
