@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>JS by Clément</title>
+    <link rel="stylesheet" type="text/css" href="../style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet"> 
+</head>
+
+<body>
+    <header>
+        This website is approved by kbibi!
+    </header>
+    <nav>
+        <ul>
+            <li><a href="../index.html">Index</a></li>
+            <li><a href="https://github.com/clementbaudin">Github</a></li>
+            <li><a href="../music.html">Music</a></li>
+            <li><a href="index.html">JS</a></li>
+        </ul>
+    </nav>
+    <main>
+        <article>
+            <h1>Introducing objects</h1>
+            <p>Canvas under</p>
+            <canvas id="gameField">
+
+            </canvas>
+        </article>
+        <aside>
+            <ul>
+                <li><a href="js-exo1.html">Exercise 1: Callbacks</a></li>
+                <li><a href="js2-exo2.html">Exercise 2: Canvas</a></li>
+                <li><a href="js2-exo4.html">Exercise 4: Objects</a></li>
+            </ul>
+        </aside>
+    </main>
+    <footer>
+        © Copyrights Clément Baudin - January 2021
+    </footer>
+</body>
+<script>
+    //document.addEventListener("DOMContentLoaded", startGame);
+
+    const animFrame = window.requestAnimationFrame;
+
+    const canvas = document.getElementById("gameField");
+    canvas.width = 600;
+    canvas.height = 600;
+    const context = canvas.getContext("2d");
+    context.strokeRect(0, 0, canvas.width, canvas.height);
+
+
+    let clock = 0;
+
+    class MovingSquare {
+        constructor(context, x, y, width, height, speed, delay) {
+            this.context = context;
+            this.x = x;
+            this.y = y;
+            this.width = width;
+            this.height = height;
+            this.speed = speed;
+            this.delay = delay;
+            this.hasStarted = false;
+        }
+
+        clear() {
+            this.context.clearRect(this.x, this.y, this.width, this.height)
+        }
+
+        update() {
+            if (this.hasStarted == false && this.delay < clock) {
+                console.log("starting...");
+                this.hasStarted = true;
+            }
+            if (this.hasStarted == true && clock%this.speed == 0) {
+                if (this.x + this.width < canvas.width) {
+                    this.x += 1;
+                }
+            }
+        }
+
+        draw() {
+            this.context.fillStyle = "rgb(0, 0, 200)";
+            this.context.fillRect(this.x, this.y, this.width, this.height);
+        }
+
+    }
+
+    const allMovingSquares = new Array();
+
+    const movingSquare1 = new MovingSquare(context, 1, 10, 20, 20, 1, 0);
+    const movingSquare2 = new MovingSquare(context, 1, 50, 20, 20, 2, 50);
+    const movingSquare3 = new MovingSquare(context, 1, 90, 20, 20, 1, 30);
+
+
+
+    allMovingSquares.push(movingSquare1);
+    allMovingSquares.push(movingSquare2);
+    allMovingSquares.push(movingSquare3);
+
+
+    function clearGame() {
+        allMovingSquares.forEach(elem => elem.clear());
+    }
+
+    function updateGame() {
+        clock += 1;
+        allMovingSquares.forEach(elem => elem.update());
+    }
+
+    function drawGame() {
+        allMovingSquares.forEach(elem => elem.draw());
+    }
+
+
+    function gameLoop() {
+        clearGame();
+        updateGame();
+        drawGame();
+        animFrame(gameLoop);
+    }
+
+    animFrame(gameLoop);
+
+</script>
+</html>

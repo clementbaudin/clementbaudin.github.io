@@ -96,6 +96,15 @@ nav a {
   color: black;
 }
 
+aside a {
+  text-decoration: none;
+  color: inherit;
+}
+
+aside a:hover {
+  color: white;
+}
+
 nav form {
   flex: 1;
   display: flex;

@@ -22,8 +22,11 @@
     </nav>
     <main>
         <article>
-            <h1>Java Script</h1>
-            <p>Go through the different exercise on the side</p>
+            <h1>Let's move: Setinterval & Canevas</h1>
+            <p>Not finished yet</p>
+            <canvas id="moving-square" height="600" width="600">
+
+            </canvas>
         </article>
         <aside>
             <ul>
@@ -36,6 +39,17 @@
     <footer>
         © Copyrights Clément Baudin - January 2021
     </footer>
-    <script src="../scripts/main.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", draw);
+        function draw() {
+            var canvas = document.getElementById("moving-square");
+            if (canvas.getContext) {
+                var context = canvas.getContext("2d");
+                context.strokeRect(0, 0, 600, 600);
+                context.fillRect(0, 0, 50, 50);
+            }
+        }
+
+    </script>
 </body>
 </html>
