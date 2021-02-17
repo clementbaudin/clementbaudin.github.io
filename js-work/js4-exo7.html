@@ -45,6 +45,9 @@
 </body>
 
 <script>
+    if (window.Worker) {
+    console.log("Worker supported");
+    
     document.addEventListener("DOMContentLoaded", startGame);
 
     const canvas = document.getElementById("gameField");
@@ -53,9 +56,6 @@
     const context = canvas.getContext("2d");
     context.strokeRect(0, 0, canvas.width, canvas.height);
     
-    if (window.Worker) {
-    console.log("Worker supported");
-
 
     class spotCreator {
         constructor(color) {
