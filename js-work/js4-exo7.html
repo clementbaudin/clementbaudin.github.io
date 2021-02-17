@@ -45,34 +45,48 @@
 </body>
 
 <script>
+    document.addEventListener("DOMContentLoaded", startGame);
+
     const canvas = document.getElementById("gameField");
     canvas.width = 600;
     canvas.height = 600;
     const context = canvas.getContext("2d");
     context.strokeRect(0, 0, canvas.width, canvas.height);
 
-
-    if (window.Worker) {
-        var myWorker = new Worker("worker.js");
-        color = "blue";
-        myWorker.postMessage(["need coordinates", canvas.width, canvas.height]);
-        myWorker.onmessage = function(event) {
-            context.beginPath();
-            context.arc(event.data[0], event.data[1], 10, 0, 2*Math.PI);
-            context.strokeStyle = color;
-            context.stroke();
+    class spotCreator {
+        constructor(color) {
+            this.color = color;
+            this.worker = new Worker("worker.js");
         }
+    }
 
-    } else {
-        console.log('Your browser doesn\'t support web workers.')
+    const allCreators = new Array();
+
+    for (let i = 0; i < 10; i++) {
+        aCreator = new spotCreator('#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6))
+        allCreators.push()
     }
 
 
+    function game() {
+        if (window.Worker) {
+        allCreators.forEach(creator => {
+            creator.worker.postMessage(["need coordinates", canvas.width, canvas.height]);
+            creator.worker.onmessage = function(event) {
+                context.beginPath();
+                context.arc(event.data[0], event.data[1], 10, 0, 2*Math.PI);
+                context.fillStyle = creator.color;
+                context.fill();
+            }
+        });
+        } else {
+            console.log('Your browser doesn\'t support web workers.')
+        }
+    }
 
     function startGame() {
         setInterval(game, 1000);
     }
-    startGame();
-
+    
 </script>
 </html>
