@@ -66,11 +66,6 @@
 
     const allCreators = new Array();
 
-    for (let i = 0; i < 10; i++) {
-        console.log("Pushing a creator");
-        aCreator = new spotCreator("blue");
-        allCreators.push(aCreator);
-    }
 
     function game() {
         console.log("Entering game");
@@ -88,6 +83,11 @@
     }
 
     function startGame() {
+        for (let i = 0; i < 10; i++) {
+            console.log("Pushing a creator");
+            aCreator = new spotCreator("blue");
+            allCreators.push(aCreator);
+        }
         setInterval(game, 1000);
     }
     //startGame();
