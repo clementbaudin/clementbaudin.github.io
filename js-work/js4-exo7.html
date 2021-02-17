@@ -23,7 +23,7 @@
     <main>
         <article>
             <h1>Web Worker</h1>
-            <p>Circles display under in a canvas at coordinates given by fetch() method</p>
+            <p>Some web workers creates random 2D coordinates and a spots are displays at these coordinates</p>
             <canvas id="gameField">
 
             </canvas>
@@ -51,19 +51,23 @@
     const context = canvas.getContext("2d");
     context.strokeRect(0, 0, canvas.width, canvas.height);
 
-    function game() {
-        fetch("https://stwom.herokuapp.com/"+canvas.width, {
-            method: "get"
-        })
-            .then(response => response.json())
-            .then(data => {
-                context.beginPath();
-                context.arc(data.x, data.y, 10, 0, 2*Math.PI);
-                context.strokeStyle = "limegreen";
-                context.stroke();
-            })
-            .catch(console.error);
-    }    
+
+    if (window.Worker) {
+        var myWorker = new Worker("worker.js");
+        color = "blue";
+        myWorker.postMessage(["need coordinates", canvas.width, canvas.height]);
+        myWorker.onmessage = function(event) {
+            context.beginPath();
+            context.arc(event.data[0], event.data[1], 10, 0, 2*Math.PI);
+            context.strokeStyle = color;
+            context.stroke();
+        }
+
+    } else {
+        console.log('Your browser doesn\'t support web workers.')
+    }
+
+
 
     function startGame() {
         setInterval(game, 1000);
