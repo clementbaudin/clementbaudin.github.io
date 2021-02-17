@@ -85,7 +85,7 @@
     function startGame() {
         for (let i = 0; i < 10; i++) {
             console.log("Pushing a creator");
-            aCreator = new spotCreator("blue");
+            aCreator = new spotCreator('#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6));
             allCreators.push(aCreator);
         }
         setInterval(game, 1000);
