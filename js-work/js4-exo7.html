@@ -45,13 +45,15 @@
 </body>
 
 <script>
-    document.addEventListener("DOMContentLoaded", startGame);
+    //document.addEventListener("DOMContentLoaded", startGame);
 
     const canvas = document.getElementById("gameField");
     canvas.width = 600;
     canvas.height = 600;
     const context = canvas.getContext("2d");
     context.strokeRect(0, 0, canvas.width, canvas.height);
+    
+    if (window.Worker) {
 
     class spotCreator {
         constructor(color) {
@@ -69,7 +71,6 @@
 
 
     function game() {
-        if (window.Worker) {
         allCreators.forEach(creator => {
             creator.worker.postMessage(["need coordinates", canvas.width, canvas.height]);
             creator.worker.onmessage = function(event) {
@@ -79,14 +80,17 @@
                 context.fill();
             }
         });
-        } else {
-            console.log('Your browser doesn\'t support web workers.')
-        }
+
     }
 
     function startGame() {
         setInterval(game, 1000);
     }
+    startGame();
+
     
+    } else {
+            console.log('Your browser doesn\'t support web workers.')
+    }
 </script>
 </html>
