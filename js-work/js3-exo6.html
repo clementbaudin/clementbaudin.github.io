@@ -22,9 +22,9 @@
     </nav>
     <main>
         <article>
-            <h1>Let's move: Setinterval & Canevas</h1>
-            <p>Not finished yet</p>
-            <canvas id="moving-square" height="600" width="600">
+            <h1>Using Fetch</h1>
+            <p>Circles display under in a canvas at coordinates given by fetch() method</p>
+            <canvas id="gameField">
 
             </canvas>
         </article>
@@ -40,19 +40,35 @@
         </aside>
     </main>
     <footer>
-        © Copyrights Clément Baudin - January 2021
+        © Copyrights Clément Baudin - February 2021
     </footer>
-    <script>
-        document.addEventListener("DOMContentLoaded", draw);
-        function draw() {
-            var canvas = document.getElementById("moving-square");
-            if (canvas.getContext) {
-                var context = canvas.getContext("2d");
-                context.strokeRect(0, 0, 600, 600);
-                context.fillRect(0, 0, 50, 50);
-            }
-        }
-
-    </script>
 </body>
+
+<script>
+    const canvas = document.getElementById("gameField");
+    canvas.width = 600;
+    canvas.height = 600;
+    const context = canvas.getContext("2d");
+    context.strokeRect(0, 0, canvas.width, canvas.height);
+
+    function game() {
+        fetch("https://stwom.herokuapp.com/"+canvas.width, {
+            method: "get"
+        })
+            .then(response => response.json())
+            .then(data => {
+                context.beginPath();
+                context.arc(data.x, data.y, 10, 0, 2*Math.PI);
+                context.strokeStyle = "limegreen";
+                context.stroke();
+            })
+            .catch(console.error);
+    }    
+
+    function startGame() {
+        setInterval(game, 1000);
+    }
+    startGame();
+
+</script>
 </html>

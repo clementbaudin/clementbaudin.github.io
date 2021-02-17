@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>JS by Clément</title>
+    <link rel="stylesheet" type="text/css" href="../style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet"> 
+</head>
+
+<body>
+    <header>
+        This website is approved by kbibi!
+    </header>
+    <nav>
+        <ul>
+            <li><a href="../index.html">Index</a></li>
+            <li><a href="https://github.com/clementbaudin">Github</a></li>
+            <li><a href="../music.html">Music</a></li>
+            <li><a href="index.html">JS</a></li>
+        </ul>
+    </nav>
+    <main>
+        <article>
+            <h1>Using AJAX</h1>
+            <p>Circles display under in a canvas at coordinates given with call to xhr object</p>
+            <canvas id="gameField">
+
+            </canvas>
+        </article>
+        <aside>
+            <ul>
+                <li><a href="js-exo1.html">Exercise 1: Callbacks</a></li>
+                <li><a href="js2-exo2.html">Exercise 2: Canvas</a></li>
+                <li><a href="js2-exo4.html">Exercise 4: Objects</a></li>
+                <li><a href="js3-exo5.html">Exercise 5: AJAX</a></li>
+                <li><a href="js3-exo6.html">Exercise 6: Fetch</a></li>
+                <li><a href="js4-exo7.html">Exercise 7: Web Worker</a></li>
+            </ul>
+        </aside>
+    </main>
+    <footer>
+        © Copyrights Clément Baudin - February 2021
+    </footer>
+</body>
+
+<script>
+    const canvas = document.getElementById("gameField");
+    canvas.width = 600;
+    canvas.height = 600;
+    const context = canvas.getContext("2d");
+    context.strokeRect(0, 0, canvas.width, canvas.height);
+
+    function game() {
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == XMLHttpRequest.DONE) { // XMLHttpRequest.DONE == 4
+                if (xhr.status == 200) {
+                    console.log("status 200" + xhr.responseText);
+                    let coordinates = JSON.parse(xhr.responseText);
+                    context.beginPath();
+                    context.arc(coordinates.x, coordinates.y, 10, 0, 2*Math.PI);
+                    context.strokeStyle = "cornflowerblue";
+                    context.stroke();
+                } else if (xhr.status == 400) {
+                    alert("There was an error 400");
+                } else {
+                    alert("Something else other than 200 was returned");
+                }
+            }
+        }; //ma callback
+        xhr.open("GET", "https://stwom.herokuapp.com/"+canvas.width, true);
+        xhr.send();
+
+    }    
+
+    function startGame() {
+        setInterval(game, 1000);
+    }
+    startGame();
+
+</script>
+</html>
