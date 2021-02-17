@@ -45,7 +45,7 @@
 </body>
 
 <script>
-    //document.addEventListener("DOMContentLoaded", startGame);
+    document.addEventListener("DOMContentLoaded", startGame);
 
     const canvas = document.getElementById("gameField");
     canvas.width = 600;
@@ -54,6 +54,8 @@
     context.strokeRect(0, 0, canvas.width, canvas.height);
     
     if (window.Worker) {
+    console.log("Worker supported");
+
 
     class spotCreator {
         constructor(color) {
@@ -65,12 +67,13 @@
     const allCreators = new Array();
 
     for (let i = 0; i < 10; i++) {
-        aCreator = new spotCreator('#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6))
+        console.log("Pushing a creator");
+        aCreator = new spotCreator("blue")
         allCreators.push()
     }
 
-
     function game() {
+        console.log("Entering game");
         allCreators.forEach(creator => {
             creator.worker.postMessage(["need coordinates", canvas.width, canvas.height]);
             creator.worker.onmessage = function(event) {
@@ -79,6 +82,7 @@
                 context.fillStyle = creator.color;
                 context.fill();
             }
+            console.log("Actions done for a creator");
         });
 
     }
@@ -86,11 +90,11 @@
     function startGame() {
         setInterval(game, 1000);
     }
-    startGame();
+    //startGame();
 
-    
+
     } else {
-            console.log('Your browser doesn\'t support web workers.')
+        console.log('Your browser doesn\'t support web workers.')
     }
 </script>
 </html>
